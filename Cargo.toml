@@ -1,0 +1,31 @@
+[package]
+name = "aviabot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tsclientlib = { git = "https://github.com/ReSpeak/tsclientlib.git", features = ["audio"] }
+tsproto-packets = { git = "https://github.com/ReSpeak/tsclientlib.git" }
+opus = "0.3"
+
+futures = "0.3"
+
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "signal"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+anyhow = "1"
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+crossbeam = { version = "0.8", features = ["crossbeam-channel"] }
+lapin = "2"
+thread-priority = "1"
+rustc-hash = "2"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

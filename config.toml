@@ -1,0 +1,26 @@
+[ts3]
+address = "31.135.12.129:9987"
+name = "Dispatcher"
+channel = "TestDisp"
+channel_password = "123"
+identity_key = "key"
+
+[rabbitmq]
+enabled = true
+hostname = "localhost"
+port = 5672
+username = "guest"
+password = "password"
+queue = "avia_bot_queue"
+exchange = "avia_bot_exchange"
+
+[relay]
+max_distance = 42000.0
+coalition_check = true
+radio_effects_enabled = true
+
+[audio]
+output_gain = 5.0
+frame_ms = 20
+sample_rate = 48000
+synthetic_speakers = 0  # кол-во синтетических юезров для нагрузки
