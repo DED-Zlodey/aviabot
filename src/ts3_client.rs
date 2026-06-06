@@ -98,8 +98,6 @@ impl Ts3Client {
                             let uid_str = part.client_uid.to_string();
                             let info = Ts3ClientInfo {
                                 client_id: part.client_id.0,
-                                channel_id: 0,
-                                name: part.name.clone(),
                                 uid: Some(uid_str.clone()),
                             };
                             client_list_clone.insert_or_update(info);

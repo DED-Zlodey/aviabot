@@ -280,10 +280,6 @@ impl SidetoneGenerator {
         self.tail_noise.force_tail();
     }
 
-    pub fn is_active(&self) -> bool {
-        self.click_env >= 0.001 || self.tail_noise.is_active()
-    }
-
     /// Fill `out` with the next click frame. Returns true while click continues.
     pub fn next_click_frame(&mut self, out: &mut [i16]) -> bool {
         if self.click_env < 0.001 {

@@ -22,6 +22,8 @@ toml = "0.8"
 
 crossbeam = { version = "0.8", features = ["crossbeam-channel"] }
 lapin = "2"
+reqwest = { version = "0.12", default-features = false, features = ["json", "native-tls"] }
+chrono = { version = "0.4", features = ["serde"] }
 thread-priority = "1"
 rustc-hash = "2"
 

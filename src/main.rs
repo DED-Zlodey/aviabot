@@ -2,6 +2,7 @@ mod audio;
 mod config;
 mod position;
 mod rabbitmq;
+mod seq_logger;
 mod test_load;
 mod ts3_client;
 mod ts3_client_list;
@@ -23,14 +24,35 @@ async fn main() {
     }
 }
 
+
 async fn run() -> Result<()> {
     let cfg = config::Config::load("config.toml")?;
     info!("Configuration loaded");
 
     let position_service = Arc::new(position::PlayerPositionService::new());
 
+    // Optional Seq logger for structured remote logging.
+    let seq_logger = if cfg.seq.enabled {
+        info!(
+            "Seq logging enabled at {} (app={})",
+            cfg.seq.url, cfg.seq.application_name
+        );
+        Some(seq_logger::SeqLogger::new(
+            cfg.seq.url.clone(),
+            cfg.seq.api_key.clone(),
+            cfg.seq.application_name.clone(),
+        ))
+    } else {
+        info!("Seq logging disabled");
+        None
+    };
+
     // Start RabbitMQ consumer
-    let rabbit = rabbitmq::RabbitMqConsumer::new(cfg.rabbitmq.clone(), position_service.clone());
+    let rabbit = rabbitmq::RabbitMqConsumer::new(
+        cfg.rabbitmq.clone(),
+        position_service.clone(),
+        seq_logger.clone(),
+    );
     let rabbit_task = tokio::spawn(async move {
         if let Err(e) = rabbit.run().await {
             error!("RabbitMQ consumer error: {:?}", e);
