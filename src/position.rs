@@ -59,7 +59,6 @@ pub enum PlayerState {
 
 #[derive(Debug, Clone, Default)]
 pub struct PlayerPosition {
-    pub id: i64,
     pub gamer_name: String,
     /// Coalition: 101 (allies), 201 (axis)
     pub country: i32,
@@ -96,7 +95,6 @@ pub struct PlayerSession {
     #[serde(rename = "type")]
     pub aircraft_type: Option<String>,
     pub name: Option<String>,
-    pub pid: Option<i64>,
 }
 
 /// Snapshot of all position dictionaries, suitable for routing decisions.
@@ -233,15 +231,6 @@ impl PlayerPositionService {
         }
     }
 
-    pub fn get_by_uid(&self, uid: &str) -> Option<PlayerPosition> {
-        let inner = self.inner.read().unwrap();
-        inner.lobby_allies.get(uid)
-            .or_else(|| inner.lobby_axis.get(uid))
-            .or_else(|| inner.active_allies.get(uid))
-            .or_else(|| inner.active_axis.get(uid))
-            .cloned()
-    }
-
     fn is_valid_coalition(country: i32) -> bool {
         country == 101 || country == 201
     }
@@ -264,7 +253,6 @@ impl PlayerPositionService {
     fn create_position(session: &PlayerSession, uid: String, is_in_lobby: bool) -> PlayerPosition {
         let aircraft_type = session.aircraft_type.clone().unwrap_or_default();
         PlayerPosition {
-            id: session.id,
             gamer_name: session.gamer_name.clone(),
             country: session.country,
             team_speak_id: Some(uid),

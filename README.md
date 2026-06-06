@@ -151,7 +151,7 @@ aviabot.exe
   "id": 123,
   "gamerName": "PilotName",
   "country": 101,
-  "teamSpeakId": "base64",
+  "teamSpeakId": "uid base64",
   "x": 15234.5,
   "y": 120.0,
   "z": 8765.2,

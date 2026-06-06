@@ -1,5 +1,5 @@
 [ts3]
-address = "31.135.12.129:9987"
+address = "127.0.0.1:9987"
 name = "Dispatcher"
 channel = "TestDisp"
 channel_password = "123"
