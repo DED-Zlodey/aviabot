@@ -33,4 +33,9 @@ impl Ts3ClientList {
             .filter_map(|c| c.uid.as_ref().map(|uid| (uid.clone(), c.client_id)))
             .collect()
     }
+
+    pub fn remove(&self, client_id: u16) {
+        let mut inner = self.inner.write().unwrap();
+        inner.remove(&client_id);
+    }
 }

@@ -154,7 +154,7 @@ fn mixer_loop(
                     let speaker_uid = match client_id_to_uid.get(&client_id) {
                         Some(uid) => uid.clone(),
                         None => {
-                            trace!("Dropping packet from unresolved client {}", client_id);
+                            debug!("Dropping packet from unresolved client {}", client_id);
                             continue;
                         }
                     };
@@ -382,7 +382,13 @@ fn compute_recipients(
     for (_speaker_client_id, speaker_uid) in active_speaker_uids {
         let speaker_pos = match routing.positions.get_by_uid(speaker_uid) {
             Some(pos) => pos,
-            None => continue,
+            None => {
+                debug!(
+                    "Speaker {} has no position data, skipping routing",
+                    speaker_uid
+                );
+                continue;
+            }
         };
 
         // Validate coalition
@@ -420,7 +426,13 @@ fn compute_recipients(
 
             let candidate_cid = match routing.uid_to_client_id.get(candidate_uid) {
                 Some(&cid) => cid,
-                None => continue,
+                None => {
+                    debug!(
+                        "Candidate {} has no resolved TS3 client_id, skipping",
+                        candidate_uid
+                    );
+                    continue;
+                }
             };
 
             // Active speakers get sidetone click/tail instead of the mixed stream
