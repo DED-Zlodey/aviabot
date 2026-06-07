@@ -10,6 +10,8 @@ pub struct Config {
     pub seq: SeqConfig,
     pub relay: RelayConfig,
     pub audio: AudioConfig,
+    #[serde(default)]
+    pub db: DbConfig,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -29,7 +31,14 @@ pub struct RabbitMqConfig {
     pub port: u16,
     pub username: String,
     pub password: String,
+    /// Queue for IL-2 player position / session events.
     pub queue: String,
+    /// Optional separate queue for TS3 server query events (join/leave/moved).
+    #[serde(default)]
+    pub ts3_events_queue: Option<String>,
+    /// Exchange that publishes TS3 events (consumer will bind the queue to it).
+    #[serde(default)]
+    pub ts3_events_exchange: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
@@ -71,7 +80,19 @@ pub struct AudioConfig {
     pub synthetic_speakers: usize,
 }
 
+#[derive(Debug, Clone, Deserialize, Default)]
+pub struct DbConfig {
+    #[serde(default)]
+    pub enabled: bool,
+    #[serde(default = "default_db_url")]
+    pub url: String,
+}
+
 fn default_output_gain() -> f32 { 5.0 }
+
+fn default_db_url() -> String {
+    "postgres://HawUser:password@localhost:5432/HawDb".to_string()
+}
 
 impl Config {
     pub fn load<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {

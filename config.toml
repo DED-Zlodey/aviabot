@@ -11,8 +11,10 @@ hostname = "localhost"
 port = 5672
 username = "guest"
 password = "password"
-queue = "avia_bot_queue"
+queue = "avia_bot_queue" # очередь IL-2
 exchange = "avia_bot_exchange"
+ts3_events_queue = "ts3_events"   # очередь событий ТимСпика
+ts3_events_exchange = "ts3.events" # exchange откуда читать события ТС
 
 [relay]
 max_distance = 42000.0
@@ -24,3 +26,7 @@ output_gain = 5.0
 frame_ms = 20
 sample_rate = 48000
 synthetic_speakers = 0  # кол-во синтетических юезров для нагрузки
+
+[db]
+enabled = true
+url = "postgres://UserName:password@localhost:5432/DbName"
